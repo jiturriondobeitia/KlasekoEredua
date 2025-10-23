@@ -78,6 +78,10 @@
             align-items: center;
         }
 
+        code {
+            color: red;
+        }
+
         /* tablet-etatik gora */
         @media (min-width: 768px) {
             .main-area {
