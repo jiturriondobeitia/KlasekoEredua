@@ -109,6 +109,9 @@ git status
 ```
 
 Komando honek bi gauza egiten ditu:
+```bash
+git pull
+```
 
 Aldaketak deskargatu (fetch)
 
