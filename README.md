@@ -43,7 +43,7 @@ Azkenik, *commit*-ak GitHub-era igo:
 git push
 ```
 
-> ### 📋 Adibidea  
+> ### Adibidea  
 > Imaginatu gure biltegian hiru motatako aldaketak ditugula:
 >
 > | Egoera          | Fitxategia      | Zer egin                   | Git komandoa                                |
@@ -84,7 +84,7 @@ Horregatik, **zure biltegia eguneratu** behar da aldian behin, azken bertsioa ed
 
 ---
 
-## 1️. Zerbitzariko aldaketak ikusi
+## 1. Zerbitzariko aldaketak ikusi
 Lehenik, egiaztatu ea zure biltegia **zaharkituta** dagoen edo **berria** den:
 
 `fetch` komandoak GitHub-etik azken informazioa ekarriko du, baina ez du fitxategirik aldatuko zure ordenagailuan.
@@ -115,6 +115,68 @@ Komando honek bi gauza egiten ditu:
 - Aldaketak deskargatu (fetch)
 - Eta automatikoki bateratu zure fitxategiekin (merge)
 
+Si haces git push pero en la rama remota hay commits que tú no tienes en tu rama local, Git rechazará el push por defecto para evitar que sobrescribas esos cambios remotos.
 
+Git no permite sobrescribir el historial remoto si detecta que estás detrás del remoto (es decir, hay commits que tú no tienes).
+
+Verás un mensaje como este:
+```bash
+
+
+
+```
+
+Como se soluciona? Integrar los cambios antes de hacer push
+
+Imagina que trabajas en la rama main:
+
+En remoto (origin/main) hay un commit nuevo que tú no tienes.
+
+En local, tú también hiciste un commit nuevo.
+
+```bash
+Remoto: A --- B --- C
+Local:  A --- B --- D
+```
+
+Tu commit D está basado en B, pero el remoto tiene C.
+Si haces git push, fallará porque el remoto tiene C y tú no.
+
+### Opción 1
+
+Cuando haces `git pull` haces dos cosas:
+1. `git fetch` (descarga los cambios remotos)
+2. `git merge` (fusiona esos cambios en tu rama)
+    1. Crea un nuevo commit de merge (M) que une tus cambios con los remotos
+
+```bash
+A --- B --- C --- D
+           \       /
+             \--- M  ← merge commit
+```
+El historial se llena de commits de merge, lo que puede complicar la lectura.
+
+### Opción 2
+
+Cuando haces `git pull --rebase` haces dos cosas:
+1. `git fetch` (descarga los cambios remotos)
+2. `git rebase` (recoloca tus commits sobre los del remoto)
+    1. Descarga el commit C.
+    2. Quita temporalmente tu commit D.
+    3. Aplica C.
+    4. Vuelve a aplicar D encima de C.
+
+```bash
+A --- B --- C --- D
+```
+Así siempre tendrás un historial lineal.
+
+| Comando             | Qué hace                             | Resultado                  |
+| ------------------- | ------------------------------------ | -------------------------- |
+| `git pull`          | Hace `fetch` + `merge`               | Historial con merge commit |
+| `git pull --rebase` | Hace `fetch` + rebase de tus commits | Historial lineal y limpio  |
+
+
+## 3. Aldaketen historikoa
 
 Biltegian egindako `commit`-en [historikoa](https://github.com/jiturriondobeitia/KlasekoEredua/network) 
