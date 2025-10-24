@@ -3,7 +3,7 @@
 Klasean Git erabiliz lan egiteko oinarrizko pausoak:
 
 ## 1. Repositorioa klonatu
-Lehenik eta behin, klaseko ereduaren biltegia zure ordenagailura jaitsi:
+Lehenik eta behin, zure ordenagailura klaseko ereduaren **biltegia jaitsi**:
 ```bash
 git clone https://github.com/jiturriondobeitia/KlasekoEredua.git
 ```
@@ -11,34 +11,34 @@ git clone https://github.com/jiturriondobeitia/KlasekoEredua.git
 Jarraian lanean arituko gara: Fitxategietan aldaketak egin, fitxategi berriak gehitu edo ezabatu.
 
 ## 2. Aldaketak egiaztatu
-Biltegi barruan kokatuta gaudela lokalean eta Github-eko zerbitzariaren arteko aldaketak ikusteko:
+Biltegi barruan kokatuta gaudela lokalean eta Github-eko zerbitzariaren arteko **aldaketak ikusi**:
 ```bash
 git status
 ```
 
 ## 3. Fitxategiak gehitu
-Zer fitxategi igo nahi dituzun zehaztu:
+Aldaketak dituztenen fitxategien artean ,zerbitzarian eguneratu nahi diren **fitxategiak zehaztu**:
 ```bash
-git add <fitxategia1> <fitxategia2>
+git add *fitxategia1* *fitxategia2*
 # Edo aldaketa guztiak gehitzeko:
 git add .
 ```
 
 ## 4. Commit bat sortu
-Fitxategiak igotzeko commit bat egin, deskribapen labur batekin:
+*Commit* bat egin aldaketen deskribapen labur batekin batera, aurrekoan gehitutako fitxategiak **zerbitzarira igo**tzeko:
 ```bash
 git commit -m "Nire lehenengo commit-a"
 ```
 
 ## 5. Git identitatea konfiguratu
-Biltegian lehenengo aldiz aldaketak egiten badira, zure izena eta posta elektronikoa ezarri behar dira:
+Biltegira lehenengo aldiz *commit*-a egiten bada, erabiltzailearen izena eta posta elektronikoa ezarri behar dira:
 ```bash
 git config --global user.email "jiturriondobeitia@fpsanturtzilh.eus"
 git config --global user.name "Jon Iturri"
 ```
 
 ## 6. Commit-ak zerbitzarira igo
-Azkenik, zure commit-ak GitHub-era igo:
+Azkenik, *commit*-ak GitHub-era igo:
 ```bash
 git push
 ```
@@ -56,11 +56,13 @@ git push
 > ```bash
 > git status
 >
-> # zer adarretan ari garen lanean erakusten du ("main" adar lehenetsia da)
+> # Zer adarretan ari garen lanean erakusten du ("main" adar lehenetsia da)
 > On branch main
+> # Commit-eatu gabeko aldaketak
 > Changes not staged for commit:
 >   modified:   aldatua.txt
 >   deleted:    ezabatua.txt
+> # Fitxategi berriak
 > Untracked files:
 >   new file:   berria.txt
 >
@@ -73,7 +75,7 @@ git push
 > git push
 > ```
 
-
+> **OHARRA:** `Push` egin baino lehen ziurtatu behar da biltegi lokala urrutiko biltegiaren azken bertsioarekin bat egiten duela, hau da, biltegi lokala eguneratuta dagoela.
 
 # 🔄 Zerbitzaritik fitxategiak eguneratzea
 
@@ -84,7 +86,8 @@ Horregatik, **zure biltegia eguneratu** behar da aldian behin, azken bertsioa ed
 
 ## 1️. Zerbitzariko aldaketak ikusi
 Lehenik, egiaztatu ea zure biltegia **zaharkituta** dagoen edo **berria** den:
-fetch komandoak GitHub-etik azken informazioa ekarriko du, baina ez du fitxategirik aldatuko zure ordenagailuan.
+
+`fetch` komandoak GitHub-etik azken informazioa ekarriko du, baina ez du fitxategirik aldatuko zure ordenagailuan.
 ```bash
 git fetch
 ```
@@ -105,14 +108,13 @@ Git-ek adieraziko dizu ea zure branch-a (adibidez, main) atzeratuta dagoen (behi
 
 Zerbitzariko aldaketak zure ordenagailura ekartzeko eta aplikatzeko:
 ```bash
-git status
-```
-
-Komando honek bi gauza egiten ditu:
-```bash
 git pull
 ```
 
-Aldaketak deskargatu (fetch)
+Komando honek bi gauza egiten ditu:
+- Aldaketak deskargatu (fetch)
+- Eta automatikoki bateratu zure fitxategiekin (merge)
 
-Eta automatikoki bateratu zure fitxategiekin (merge)
+
+
+Biltegian egindako `commit`-en [historikoa](https://github.com/jiturriondobeitia/KlasekoEredua/network) 
