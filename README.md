@@ -19,7 +19,7 @@ git status
 ## 3. Fitxategiak gehitu
 Aldaketak dituztenen fitxategien artean ,zerbitzarian eguneratu nahi diren **fitxategiak zehaztu**:
 ```bash
-git add *fitxategia1* *fitxategia2*
+git add fitxategia1 fitxategia2 fitxategiaN
 # Edo aldaketa guztiak gehitzeko:
 git add .
 ```
@@ -195,7 +195,7 @@ Bi pertsonak artxibo beraren zati bera aldatzen dutenean *gatazka* bat gertatzen
 > Imajinatu aurreko adibidean *C* eta *D* commit-ek fitxategi bera aldatzen dutela.
 > 
 > ```text
-> | index.html (Commit C)    | index.html (Commit D)    |
+> |   index.html (Commit C)  |   index.html (Commit D)  |
 > |--------------------------|--------------------------|
 > | <h1>                     | <h1>                     |
 > | Hola mundo               | Hola clase               |
