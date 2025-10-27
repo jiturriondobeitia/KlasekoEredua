@@ -133,13 +133,13 @@ hint: 'git pull' before pushing again.
 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 ```
 
-** Nola konpontzen da? **
+**Nola konpontzen da?**
 
 `Push` egin aurretik, urrutiko aldaketak zure adar lokalean integratzen.
 
 Imajinatu adar batean lan egiten ari duzula:
-- Urruneko adarrean zuk lokalean ez duzun commit berri bat dago.
-- Lokalean berriz, zuk ere urruneko adarrean ez dagoen commit berri bat egin duzu. 
+- Urruneko adarrean zuk lokalean ez duzun commit berri bat dago (*C*).
+- Lokalean berriz, zuk ere urruneko adarrean ez dagoen commit berri bat egin duzu (*D*). 
 
 ```bash
 Urrunean: A --- B --- C
@@ -155,7 +155,7 @@ Zure *D* commit-a *B* commit-ean oinarrituta dago, baina urrunekoak *C* dauka.
 `git pull` egiterakoan bi gauza egiten dira:
 1. `git fetch`: Urruneko aldaketak deskargatzen dira.
 2. `git merge`: Aldaketa horiek zure adarrean fusionatzen dira.
-    1. **Merge commit** (*M*) berri bat sortzen du, zure aldaketak urruneko aldaketekin lotzen dituenak.
+    - **Merge commit** (*M*) berri bat sortzen du, zure aldaketak urruneko aldaketekin lotzen dituenak.
 
 ```bash
 A --- B --- C --- D
@@ -169,21 +169,20 @@ Eragiketa honekin historikoa **merge commit**-ez betetzen da, eta horrek irakurk
 `git pull --rebase` egiterakoan bi gauza egiten dira:
 1. `git fetch`: Urruneko aldaketak deskargatzen dira.
 2. `git rebase`: Zure commit-ak urrunekoen gainean **birkokatzen** dira.
-    1. *C* commit-a deskargatzen da.
-    2. Tenporalki zure *D* commit-a kentzen da.
-    3. *C* commit-a aplikatzen da.
-    4. *D* commit-a aplikatzen du berriro baina *C* commit-aren gainean.
-
+    - *C* commit-a deskargatzen da.
+    - Tenporalki zure *D* commit-a kentzen da.
+    - *C* commit-a aplikatzen da.
+    - *D* commit-a aplikatzen du berriro baina *C* commit-aren gainean.
 
 ```bash
 A --- B --- C --- D
 ```
 Horrela beti historiala lineala izango da. 
 
-| Komandoa            | Zer egiten du?          | Emaitza                        |
-| ------------------- | ----------------------- | ------------------------------ |
-| `git pull`          | Hace `fetch` + `merge`  | Historiala *merge commit*-ekin |
-| `git pull --rebase` | Hace `fetch` + `rebase` | Historiala lineala eta garbia  |
+| Komandoa            | Zer egiten du?     | Emaitza                        |
+| ------------------- | -------------------| ------------------------------ |
+| `git pull`          | `fetch` + `merge`  | Historiala *merge commit*-ekin |
+| `git pull --rebase` | `fetch` + `rebase` | Historiala lineala eta garbia  |
 
 Behin biltegi lokala urruneko zerbitzariarekin sinkronizatuta dagoenean, `git push` erabili daiteke gure aldaketak urrunera igotzeko. 
 
@@ -191,11 +190,11 @@ Behin biltegi lokala urruneko zerbitzariarekin sinkronizatuta dagoenean, `git pu
 
 # Gatazkak Git-en
 
-Bi pertsonak artxibo beraren zati bera aldatzen dutenean gatazka bat gertatzen, Git-ek ez bait daki zein bertsio gorde `merge` edo `rebase` bat egitean.
+Bi pertsonak artxibo beraren zati bera aldatzen dutenean *gatazka* bat gertatzen, Git-ek ez bait daki zein bertsio gorde `merge` edo `rebase` bat egitean.
 
 > Imajinatu aurreko adibidean *C* eta *D* commit-ek fitxategi bera aldatzen dutela.
 > 
-> ```bash
+> ```text
 > | index.html (Commit C)    | index.html (Commit D)    |
 > |--------------------------|--------------------------|
 > | <h1>                     | <h1>                     |
@@ -234,7 +233,7 @@ both modified: index.html
 ```
 
 2. Fitxategia eskuz editatu, mantendu nahi den kodea aukeratuz:
-```bash
+```text
 <h1>Hola 'mundo' edo 'clase'</h1>
 ```
 
