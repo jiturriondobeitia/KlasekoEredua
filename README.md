@@ -69,7 +69,7 @@ git push
 > # Aldaketa guztiak prestatu commit-a egiteko
 > git add berria.txt aldatua.txt
 > git rm ezabatua.txt
-> # Commit-a egin horren aldaketaren deskripzioarekin batera
+> # Commit-a egin horren aldaketek egiten duten deskripzioarekin batera
 > git commit -m "berria.txt fitxategia gehituta, aldatuta.txt fitxategia aldatuta eta ezabatua.txt fitxategia ezabatua"
 > # Commit-aren aldaketak GitHub-era igo
 > git push
@@ -77,12 +77,12 @@ git push
 
 > **OHARRA:** `Push` egin baino lehen ziurtatu behar da biltegi lokala urrutiko biltegiaren azken bertsioarekin bat egiten duela, hau da, biltegi lokala eguneratuta dagoela.
 
-# 🔄 Zerbitzaritik fitxategiak eguneratzea
+---
+
+# Zerbitzaritik fitxategiak eguneratzea
 
 Klasean lanean gabiltzanean, baliteke beste ikasle edo irakasle batzuek biltegian aldaketak egitea.  
 Horregatik, **zure biltegia eguneratu** behar da aldian behin, azken bertsioa edukitzeko.
-
----
 
 ## 1. Zerbitzariko aldaketak ikusi
 Lehenik, egiaztatu ea zure biltegia **zaharkituta** dagoen edo **berria** den:
@@ -112,71 +112,151 @@ git pull
 ```
 
 Komando honek bi gauza egiten ditu:
-- Aldaketak deskargatu (fetch)
-- Eta automatikoki bateratu zure fitxategiekin (merge)
+- Aldaketak deskargatu: `fetch`
+- Eta automatikoki bateratu zure fitxategiekin: `merge`
 
-Si haces git push pero en la rama remota hay commits que tú no tienes en tu rama local, Git rechazará el push por defecto para evitar que sobrescribas esos cambios remotos.
+---
 
-Git no permite sobrescribir el historial remoto si detecta que estás detrás del remoto (es decir, hay commits que tú no tienes).
+# Biltegien arteko sinkronizazioa
 
-Verás un mensaje como este:
+`git push` egiten bada, baina urruneko adarrean lokalean ez dituzun commit-ak badaude, Git-ek zure push eragiketa baztertuko du zure aldaketek zuk ez dituzun urruneko horiek ez gainidazteko. 
+
+Git-ek ez du urruneko historia gainidazten uzten urruneko historiaren atzean zaudela detektatzen badu (hau da, zuk ez dituzun commit-ak badaude). 
+
+Horrelako mezu bat ikusiko zenuke:
 ```bash
-
-
-
+error: failed to push some refs to 'https://github.com/jiturriondobeitia/KlasekoEredua.git'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally. This is usually caused by another repository pushing to
+hint: the same ref. If you want to integrate the remote changes, use
+hint: 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 ```
 
-Como se soluciona? Integrar los cambios antes de hacer push
+** Nola konpontzen da? **
 
-Imagina que trabajas en la rama main:
+`Push` egin aurretik, urrutiko aldaketak zure adar lokalean integratzen.
 
-En remoto (origin/main) hay un commit nuevo que tú no tienes.
-
-En local, tú también hiciste un commit nuevo.
-
-```bash
-Remoto: A --- B --- C
-Local:  A --- B --- D
-```
-
-Tu commit D está basado en B, pero el remoto tiene C.
-Si haces git push, fallará porque el remoto tiene C y tú no.
-
-### Opción 1
-
-Cuando haces `git pull` haces dos cosas:
-1. `git fetch` (descarga los cambios remotos)
-2. `git merge` (fusiona esos cambios en tu rama)
-    1. Crea un nuevo commit de merge (M) que une tus cambios con los remotos
+Imajinatu adar batean lan egiten ari duzula:
+- Urruneko adarrean zuk lokalean ez duzun commit berri bat dago.
+- Lokalean berriz, zuk ere urruneko adarrean ez dagoen commit berri bat egin duzu. 
 
 ```bash
-A --- B --- C --- D
-           \       /
-             \--- M  ← merge commit
+Urrunean: A --- B --- C
+Lokalean: A --- B --- D
 ```
-El historial se llena de commits de merge, lo que puede complicar la lectura.
 
-### Opción 2
+Zure *D* commit-a *B* commit-ean oinarrituta dago, baina urrunekoak *C* dauka.
 
-Cuando haces `git pull --rebase` haces dos cosas:
-1. `git fetch` (descarga los cambios remotos)
-2. `git rebase` (recoloca tus commits sobre los del remoto)
-    1. Descarga el commit C.
-    2. Quita temporalmente tu commit D.
-    3. Aplica C.
-    4. Vuelve a aplicar D encima de C.
+`git push` egiten bada, huts egingo du urrunekoak *C* duelako eta zuk ez. 
+
+### 1. aukera
+
+`git pull` egiterakoan bi gauza egiten dira:
+1. `git fetch`: Urruneko aldaketak deskargatzen dira.
+2. `git merge`: Aldaketa horiek zure adarrean fusionatzen dira.
+    1. **Merge commit** (*M*) berri bat sortzen du, zure aldaketak urruneko aldaketekin lotzen dituenak.
 
 ```bash
 A --- B --- C --- D
+            \     /
+             \---M  ← merge commit
 ```
-Así siempre tendrás un historial lineal.
+Eragiketa honekin historikoa **merge commit**-ez betetzen da, eta horrek irakurketa zaildu dezake. 
 
-| Comando             | Qué hace                             | Resultado                  |
-| ------------------- | ------------------------------------ | -------------------------- |
-| `git pull`          | Hace `fetch` + `merge`               | Historial con merge commit |
-| `git pull --rebase` | Hace `fetch` + rebase de tus commits | Historial lineal y limpio  |
+### 2. aukera
+
+`git pull --rebase` egiterakoan bi gauza egiten dira:
+1. `git fetch`: Urruneko aldaketak deskargatzen dira.
+2. `git rebase`: Zure commit-ak urrunekoen gainean **birkokatzen** dira.
+    1. *C* commit-a deskargatzen da.
+    2. Tenporalki zure *D* commit-a kentzen da.
+    3. *C* commit-a aplikatzen da.
+    4. *D* commit-a aplikatzen du berriro baina *C* commit-aren gainean.
 
 
-## 3. Aldaketen historikoa
+```bash
+A --- B --- C --- D
+```
+Horrela beti historiala lineala izango da. 
 
-Biltegian egindako `commit`-en [historikoa](https://github.com/jiturriondobeitia/KlasekoEredua/network) 
+| Komandoa            | Zer egiten du?          | Emaitza                        |
+| ------------------- | ----------------------- | ------------------------------ |
+| `git pull`          | Hace `fetch` + `merge`  | Historiala *merge commit*-ekin |
+| `git pull --rebase` | Hace `fetch` + `rebase` | Historiala lineala eta garbia  |
+
+Behin biltegi lokala urruneko zerbitzariarekin sinkronizatuta dagoenean, `git push` erabili daiteke gure aldaketak urrunera igotzeko. 
+
+---
+
+# Gatazkak Git-en
+
+Bi pertsonak artxibo beraren zati bera aldatzen dutenean gatazka bat gertatzen, Git-ek ez bait daki zein bertsio gorde `merge` edo `rebase` bat egitean.
+
+> Imajinatu aurreko adibidean *C* eta *D* commit-ek fitxategi bera aldatzen dutela.
+> 
+> ```bash
+> | index.html (Commit C)    | index.html (Commit D)    |
+> |--------------------------|--------------------------|
+> | <h1>                     | <h1>                     |
+> | Hola mundo               | Hola clase               |
+> | </h1>                    | </h1>                    |
+> ```
+> 
+
+## 1. Nola ikusten da gatazka bat?
+
+Git-ek gatazkaren bat aurkitzen badu fitxategi batean, marka bereziak uzten ditu artxibo horretan: 
+
+```text
+<h1>
+<<<<<<< HEAD
+Hola mundo
+=======
+Hola clase
+>>>>>>> feature
+</h1>
+```
+
+Lerro hauek adierazten dutena:
+
+```text
+<<<<<<< HEAD → zure bertsio lokalaren kodea
+======= → bi bertsioen arteko bereizketa
+>>>>>>> feature → urruneko bertsioaren kodea
+```
+
+## 2. Nola konpondu gatazka bat
+
+1. Gatazka duen fitxategia ireki. Git-ek adieraziko du `git status` egiterakoan:
+```bash
+both modified: index.html
+```
+
+2. Fitxategia eskuz editatu, mantendu nahi den kodea aukeratuz:
+```bash
+<h1>Hola 'mundo' edo 'clase'</h1>
+```
+
+3. Gatazka konpondutzat markatzea: 
+```bash
+git add index.html
+```
+
+4. Eragiketa amaitzea: 
+- `merge` eragiketa batean bazeunden:
+> ```bash
+> git commit
+> ```
+- `rebase` eragiketa batean bazeunden:
+> ```bash
+> git rebase --continue
+> ```
+
+Behin gatazka lokalean konpondu dugula, `git push` erabili daiteke gure aldaketak urrunera igotzeko.
+
+---
+
+# Aldaketen historiko lerroa
+
+Github-en grafiko baten bidez era bisual eta eroso batean jarraitu daiteke biltegian egindako `commit`-en [historiko](https://github.com/jiturriondobeitia/KlasekoEredua/network) osoa.
