@@ -19,7 +19,7 @@ git status
 ## 3. Fitxategiak gehitu
 Aldaketak dituztenen fitxategien artean ,zerbitzarian eguneratu nahi diren **fitxategiak zehaztu**:
 ```bash
-git add fitxategia1 fitxategia2 fitxategiaN
+git add fitxategia1 fitxategia2 ... fitxategiaN
 # Edo aldaketa guztiak gehitzeko:
 git add .
 ```
